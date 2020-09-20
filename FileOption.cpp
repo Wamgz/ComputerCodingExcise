@@ -1,7 +1,5 @@
-#include<iostream>
-#include<stdlib.h>
-#include<stdio.h>
-#define BUFFER_SIZE 150
+#include"FileOption.h"
+
 using namespace std;
 class FileReader {
 private:
@@ -78,40 +76,3 @@ public:
 	}
 };
 
-//int main() {
-//文件读取测试
-//	FileReader* f = new FileReader();
-//	bool openResult= f->openFile("D:/Programming/C++/计算机应用编程实验/test.txt", "r");
-//	if (openResult == NULL) {
-//		cout << "error happen" << endl;
-//	}
-//	else {
-//		char* data = new char[BUFFER_SIZE];
-//		for (int i = 0; i < 1000; i++) {
-//			if (f->getline(data)) {
-//				cout << i << ":" << data << endl;;
-//			}
-//		}
-//	}
-//	
-//	system("pause");
-//	return 0;
-//}
-
-int main() {
-//文件读取测试
-	FileWriter* f = new FileWriter();
-	bool openResult= f->openFile("D:/Programming/C++/计算机应用编程实验/writetest.txt", "w");
-	if (openResult == NULL) {
-		cout << "error happen" << endl;
-	}
-	else {
-		for (int i = 0; i < 10; i++) {
-			if (!f->putline(a))
-				cout << "error happen" << endl;
-		}
-	}
-	
-	system("pause");
-	return 0;
-}
