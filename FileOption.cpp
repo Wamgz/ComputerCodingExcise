@@ -1,18 +1,14 @@
 #include"FileOption.h"
 
 using namespace std;
-class FileReader {
-private:
-	FILE* fp;
-	char buffer[BUFFER_SIZE];
 
-public:
-	FileReader() {
+
+FileReader::FileReader() {
 		fp = NULL;
 		memset(buffer, 0x00, BUFFER_SIZE);
 	}
 
-	bool openFile(char* fileLoca, char* readMode) {
+bool FileReader::openFile(char* fileLoca, char* readMode) {
 		this->fp = fopen(fileLoca, readMode);
 		if (this->fp == NULL)
 			return false;
@@ -20,7 +16,7 @@ public:
 			return true;
 	}
 
-	bool getline(char* data) {
+bool FileReader::getline(char* data) {
 		//当文件打开失败时使用读取直接返回空
 		if (fp == NULL) return false;
 		else {
@@ -34,21 +30,16 @@ public:
 		}
 	}
 
-	~FileReader() {
+FileReader::~FileReader() {
 		if (this->fp != NULL)
 			fclose(fp);
 	}
-};
 
-class FileWriter {
-private:
-	FILE* fp;
-public:
-	FileWriter() {
+FileWriter::FileWriter() {
 		this->fp = NULL;
 	}
 
-	bool openFile(char* fileLoca, char* readMode) {
+bool FileWriter::openFile(char* fileLoca, char* readMode) {
 		this->fp =	 fopen(fileLoca, readMode);
 		if (this->fp == NULL)
 			return false;
@@ -56,23 +47,21 @@ public:
 			return true;
 	}
 
-	bool putline(char* data) {
-		//putlien，效果类似于println，对于data 存在要求，使用\n 或者\0标记末尾
-		if (this->fp == NULL) return false;
-		else {
-			int putResult = 0;
-			putResult= fputs(data,this->fp);
-			if (putResult == EOF) return false;
-			putResult = fputs("\n", this->fp);
-			if (putResult == EOF) return false;
-		}
-		return true;
+bool FileWriter::putline(char* data) {
+	//putlien，效果类似于println，对于data 存在要求，使用\n 或者\0标记末尾
+	if (this->fp == NULL) return false;
+	else {
+		int putResult = 0;
+		putResult = fputs(data, this->fp);
+		if (putResult == EOF) return false;
+		putResult = fputs("\n", this->fp);
+		if (putResult == EOF) return false;
 	}
+	return true;
+}
 
-
-	~FileWriter() {
+FileWriter::~FileWriter() {
 		if (this->fp == NULL)
 			fclose(this->fp);
 	}
-};
 

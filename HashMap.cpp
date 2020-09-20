@@ -75,8 +75,8 @@ class HashMap{
 			}
 		}
 };
-int main(){
-	HashMap* map = new HashMap();
-	 
-	return 0;
-} 
+//int main(){
+//	HashMap* map = new HashMap();
+//	 
+//	return 0;
+//} 
