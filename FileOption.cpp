@@ -42,18 +42,74 @@ public:
 	}
 };
 
+class FileWriter {
+private:
+	FILE* fp;
+public:
+	FileWriter() {
+		this->fp = NULL;
+	}
+
+	bool openFile(char* fileLoca, char* readMode) {
+		this->fp =	 fopen(fileLoca, readMode);
+		if (this->fp == NULL)
+			return false;
+		else
+			return true;
+	}
+
+	bool putline(char* data) {
+		if (this->fp == NULL) return false;
+		else {
+			int putResult = 0;
+			putResult= fputs(data,this->fp);
+			if (putResult == EOF) return false;
+			putResult = fputs("\n", this->fp);
+			if (putResult == EOF) return false;
+		}
+		return true;
+	}
+
+
+	~FileWriter() {
+		if (this->fp == NULL)
+			fclose(this->fp);
+	}
+};
+
+//int main() {
+//文件读取测试
+//	FileReader* f = new FileReader();
+//	bool openResult= f->openFile("D:/Programming/C++/计算机应用编程实验/test.txt", "r");
+//	if (openResult == NULL) {
+//		cout << "error happen" << endl;
+//	}
+//	else {
+//		char* data = new char[BUFFER_SIZE];
+//		for (int i = 0; i < 1000; i++) {
+//			if (f->getline(data)) {
+//				cout << i << ":" << data << endl;;
+//			}
+//		}
+//	}
+//	
+//	system("pause");
+//	return 0;
+//}
+
 int main() {
-	FileReader* f = new FileReader();
-	bool openResult= f->openFile("D:/Programming/C++/计算机应用编程实验/test.txt", "r");
+//文件读取测试
+	FileWriter* f = new FileWriter();
+	bool openResult= f->openFile("D:/Programming/C++/计算机应用编程实验/writetest.txt", "w");
 	if (openResult == NULL) {
 		cout << "error happen" << endl;
 	}
 	else {
-		char* data = new char[BUFFER_SIZE];
-		for (int i = 0; i < 1000; i++) {
-			if (f->getline(data)) {
-				cout << i << ":" << data << endl;;
-			}
+		for (int i = 0; i < 10; i++) {
+			char* a = new char[100];
+			a[0] = i;
+			if (!f->putline(a))
+				cout << "error happen" << endl;
 		}
 	}
 	
