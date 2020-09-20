@@ -51,9 +51,7 @@ class HashMap{
 			ListNode* p = head.next;
 
 			while(p != NULL){
-				cout<<"1"<<endl;
 				if(strcmp(p -> val, val) != 0){
-					cout<<p->val<<endl;
 					p = p -> next;
 				}
 				else{
