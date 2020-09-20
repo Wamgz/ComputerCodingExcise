@@ -26,8 +26,9 @@ public:
 		//当文件打开失败时使用读取直接返回空
 		if (fp == NULL) return false;
 		else {
-			int notEOF =fscanf(this->fp,"%s",this->buffer );
-			if (notEOF != EOF) {
+			if (!feof(fp)) {
+				fgets(this->buffer,BUFFER_SIZE,this->fp);
+				this->buffer[strlen(this->buffer)-1] = '\0';
 				memcpy(data, this->buffer, sizeof(this->buffer)/sizeof(char));
 				return true;
 			}
@@ -43,7 +44,7 @@ public:
 
 int main() {
 	FileReader* f = new FileReader();
-	bool openResult= f->openFile("D:/Programming/C++/计算机应用编程实验/dict.txt", "r");
+	bool openResult= f->openFile("D:/Programming/C++/计算机应用编程实验/test.txt", "r");
 	if (openResult == NULL) {
 		cout << "error happen" << endl;
 	}
@@ -51,7 +52,7 @@ int main() {
 		char* data = new char[BUFFER_SIZE];
 		for (int i = 0; i < 1000; i++) {
 			if (f->getline(data)) {
-				cout << data << endl;
+				cout << i << ":" << data << endl;;
 			}
 		}
 	}
