@@ -1,4 +1,4 @@
-#include"FileOption.h"
+ï»¿#include"FileOption.h"
 
 using namespace std;
 
@@ -17,12 +17,13 @@ bool FileReader::openFile(char* fileLoca, char* readMode) {
 	}
 
 bool FileReader::getline(char* data) {
-		//µ±ÎÄ¼þ´ò¿ªÊ§°ÜÊ±Ê¹ÓÃ¶ÁÈ¡Ö±½Ó·µ»Ø¿Õ
+		//å½“æ–‡ä»¶æ‰“å¼€å¤±è´¥æ—¶ä½¿ç”¨è¯»å–ç›´æŽ¥è¿”å›žç©º
 		if (fp == NULL) return false;
 		else {
 			if (!feof(fp)) {
 				fgets(this->buffer,BUFFER_SIZE,this->fp);
-				this->buffer[strlen(this->buffer)-1] = '\0';
+				if(this->buffer[strlen(this->buffer) - 1] == '\n')
+					this->buffer[strlen(this->buffer)-1] = '\0';
 				memcpy(data, this->buffer, sizeof(this->buffer)/sizeof(char));
 				return true;
 			}
@@ -48,7 +49,7 @@ bool FileWriter::openFile(char* fileLoca, char* readMode) {
 	}
 
 bool FileWriter::putline(char* data) {
-	//putlien£¬Ð§¹ûÀàËÆÓÚprintln£¬¶ÔÓÚdata ´æÔÚÒªÇó£¬Ê¹ÓÃ\n »òÕß\0±ê¼ÇÄ©Î²
+	//putlienï¼Œæ•ˆæžœç±»ä¼¼äºŽprintlnï¼Œå¯¹äºŽdata å­˜åœ¨è¦æ±‚ï¼Œä½¿ç”¨\n æˆ–è€…\0æ ‡è®°æœ«å°¾
 	if (this->fp == NULL) return false;
 	else {
 		int putResult = 0;

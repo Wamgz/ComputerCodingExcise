@@ -1,8 +1,9 @@
 #include <iostream>
 #include <cstring>
+#include"FileOption.h"
 using namespace std;
 
-//RShash鏄犲皠鍑芥暟 
+//RShash映射函数 
 unsigned int RSHash(char *str)
 {
 	unsigned int b = 378551;
@@ -18,7 +19,7 @@ unsigned int RSHash(char *str)
 	return (hash & 0x7FFFFFFF);
 }
 
-//閾捐〃鍏冪礌瀹氫箟 
+//链表元素定义 
 struct ListNode {
 	char* val;
 	ListNode* next;
@@ -33,7 +34,7 @@ struct HeadNode{
 	HeadNode(int x) : val(x), next(NULL){}
 };
 
-//hashmap 瀹氫箟 
+//hashmap 定义 
 class HashMap{
 	private:
 		HeadNode hash[13];
@@ -79,13 +80,57 @@ class HashMap{
 };
 int main(){
 	HashMap* map = new HashMap();
+	FileReader* fr = new FileReader();
+	char* fileLoc = { "D:/Programming/C++/计算机应用编程实验/test_source.txt" };
+	bool openRe = fr->openFile(fileLoc,"r");
+	if (openRe == false) {
+		cout << "文件打开错误" << endl;
+		system("pause");
+		return 0;
+	}
+	char* data = new char[BUFFER_SIZE];
+	memset(data, 0x00, BUFFER_SIZE);
+	while (fr->getline(data))
+	{
+		int length = strlen(data);
+		if (length == 0) continue;
+		char* m = new char[length+1];
+		memcpy(m, data, length+1);
+		map->put(m);
+	}
+	delete fr;
 
+	FileReader* fr_target = new FileReader();
+	fileLoc = { "D:/Programming/C++/计算机应用编程实验/test _target.txt" };
+	openRe = fr_target->openFile(fileLoc,"r");
+	if (!openRe) {
+		cout << "error happen when open target file" << endl;
+		system("pause");
+		return 0;
+	}
+	
+	FileWriter* fw = new FileWriter();
+	fileLoc = { "D:/Programming/C++/计算机应用编程实验/test _result.txt" };
+	openRe = fw->openFile(fileLoc, "w");
+	if (!openRe) {
+		cout << "error happen when open result file" << endl;
+		system("pause");
+		return 0;
+	}
+
+	
+	memset(data, 0x00, BUFFER_SIZE);
+	while (fr_target->getline(data))
+	{
+		int length = strlen(data);
+		if (length == 0) continue;
+		if (map->get(data)) {
+			cout << data << endl;
+			fw->putline(data);
+		}
+	}
+	delete fr_target;
+	delete fw;
+	system("pause");
 	return 0;
 }
-/*
-hello
-world
-asdf
-dafg
-dgfdg
-*/
