@@ -59,6 +59,7 @@ public:
 	}
 
 	bool putline(char* data) {
+		//putlien，效果类似于println，对于data 存在要求，使用\n 或者\0标记末尾
 		if (this->fp == NULL) return false;
 		else {
 			int putResult = 0;
@@ -106,8 +107,6 @@ int main() {
 	}
 	else {
 		for (int i = 0; i < 10; i++) {
-			char* a = new char[100];
-			a[0] = i;
 			if (!f->putline(a))
 				cout << "error happen" << endl;
 		}
