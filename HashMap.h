@@ -20,7 +20,7 @@ struct HeadNode{
 
 class HashMap{
 	private:
-		HeadNode hash[11003];
+		HeadNode hash[hash_len];
 		
 	public:
 		HashMap();

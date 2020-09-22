@@ -44,13 +44,17 @@ void HashMap::put(char* val){
 	hashId %= hash_len;
 	
 	HeadNode* head = &hash[hashId];
-	ListNode* p = new ListNode(val);
+
 	if(head -> next == NULL){
-		head -> next = p;
+		head -> next = new ListNode(val);
 	}
 	else{
-		p -> next = head -> next;
-		head -> next = p;				
+		ListNode* p = head -> next; 
+			
+		while(p -> next != NULL){
+			p = p -> next;
+		}
+		p -> next = new ListNode(val);	
 	}
 }
 
