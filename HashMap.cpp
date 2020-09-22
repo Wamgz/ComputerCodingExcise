@@ -1,4 +1,6 @@
 #include "HashMap.h"
+#include"FileOption.h"
+#include<ctime>
 using namespace std;
 
 unsigned int RSHash(char *str)
@@ -55,9 +57,12 @@ void HashMap::put(char* val){
 }
 
 int main(){
+	clock_t start, finish;
+	start = clock();
+
 	HashMap* map = new HashMap();
 	FileReader* fr = new FileReader();
-	char* fileLoc = { "D:/Programming/C++/计算机应用编程实验/test_source.txt" };
+	char* fileLoc = { "D:/Programming/C++/计算机应用编程实验/dict.txt" };
 	bool openRe = fr->openFile(fileLoc,"r");
 	if (openRe == false) {
 		cout << "文件打开错误" << endl;
@@ -77,7 +82,7 @@ int main(){
 	delete fr;
 
 	FileReader* fr_target = new FileReader();
-	fileLoc = { "D:/Programming/C++/计算机应用编程实验/test _target.txt" };
+	fileLoc = { "D:/Programming/C++/计算机应用编程实验/string.txt" };
 	openRe = fr_target->openFile(fileLoc,"r");
 	if (!openRe) {
 		cout << "error happen when open target file" << endl;
@@ -96,17 +101,21 @@ int main(){
 
 	
 	memset(data, 0x00, BUFFER_SIZE);
+	int i = 1;
 	while (fr_target->getline(data))
 	{
 		int length = strlen(data);
 		if (length == 0) continue;
 		if (map->get(data)) {
-			cout << data << endl;
+			//cout<<i<<":" << data << endl;
 			fw->putline(data);
+			i++;
 		}
 	}
 	delete fr_target;
 	delete fw;
+	finish = clock();
+	cout << "use time  is " << finish - start << endl;
 	system("pause");
 	return 0;
 }
