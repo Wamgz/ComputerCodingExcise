@@ -20,14 +20,15 @@ unsigned int RSHash(char *str)
 
 HashMap::HashMap(){
 	for(int i = 0;i < hash_len;i++){
-		hash[i] = HeadNode();
+		heads[i] = HeadNode();
+		tails[i] = NULL;
 	}
 }
 
 int HashMap::get(char* val){
 	int hashId = RSHash(val);
 	hashId %= hash_len;
-	HeadNode head = hash[hashId];
+	HeadNode head = heads[hashId];
 	ListNode* p = head.next;
 
 	while(p != NULL){
@@ -40,26 +41,22 @@ int HashMap::get(char* val){
 	} 	
 	return 0;
 }
-		
+
 void HashMap::put(char* val){
 	int hashId = RSHash(val);
 	hashId %= hash_len;
-	
-	HeadNode* head = &hash[hashId];
-
-	if(head -> next == NULL){
-		head -> next = new ListNode(val);
+	HeadNode* head = &heads[hashId];
+	ListNode* tmp = new ListNode(val);
+	if(tails[hashId] == NULL){
+		head -> next = tmp;
+		tails[hashId] = tmp;
 	}
 	else{
-		ListNode* p = head -> next; 
-			
-		while(p -> next != NULL){
-			p = p -> next;
-		}
-		p -> next = new ListNode(val);	
+		ListNode* p = tails[hashId];
+		p -> next = tmp;
+		tails[hashId] = tmp;
 	}
 }
-
 int main(){
 	clock_t start, finish;
 	start = clock();

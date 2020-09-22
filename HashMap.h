@@ -20,8 +20,9 @@ struct HeadNode{
 
 class HashMap{
 	private:
-		HeadNode hash[hash_len];
-		
+		HeadNode heads[hash_len];
+		ListNode* tails[hash_len]; 	
+	
 	public:
 		HashMap();
 		int get(char* val);
