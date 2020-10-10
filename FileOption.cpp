@@ -22,6 +22,8 @@ bool FileReader::getline(char* data) {
 		else {
 			if (!feof(fp)) {
 				fgets(this->buffer,BUFFER_SIZE,this->fp);
+				if(strlen(this->buffer)==0)
+					return false;
 				if(this->buffer[strlen(this->buffer) - 1] == '\n')
 					this->buffer[strlen(this->buffer)-1] = '\0';
 				memcpy(data, this->buffer, sizeof(this->buffer)/sizeof(char));
