@@ -25,7 +25,7 @@ bool FileReader::getline(char* data) {
 				if(this->buffer[strlen(this->buffer) - 1] == '\n')
 					this->buffer[strlen(this->buffer)-1] = '\0';
 				memcpy(data, this->buffer, sizeof(this->buffer)/sizeof(char));
-				memset(data, 0x00, BUFFER_SIZE);
+				memset(this->buffer, 0x00, BUFFER_SIZE);
 				return true;
 			}
 			else return false;
