@@ -1,8 +1,11 @@
 #include "bplus_tree.h"
+#include "FileOption.h"
 #include <iostream>
 #include <vector>
 #include <cstring>
 #include <cstdio>
+#include <ctime>
+
 using namespace std;
 
 
@@ -37,7 +40,7 @@ IndexNode::IndexNode(int order){
 	this -> order = order;
 	this -> keynum = 0;
 	this -> isLeaf = false;
-	this -> keys = new unsigned int[order + 1];//+1是因为超出时进行分裂
+	this -> keys = new char*[order + 1];//+1是因为超出时进行分裂
 	this -> parent = NULL;
 	this -> children = new Node*[order + 1];
 }
@@ -47,7 +50,7 @@ LeafNode::LeafNode(int order){
 	this -> order = order;
 	this -> keynum = 0;
 	this -> isLeaf = true;
-	this -> keys = new unsigned int[order + 1];
+	this -> keys = new char*[order + 1];
 	this -> parent = NULL;
 	this -> values = new char*[order + 1];
 }
@@ -66,7 +69,7 @@ BPlusTree::~BPlusTree(){
 }
 
 
-Node* BPlusTree::search(char* s, unsigned int key){//查找需要插入到的叶子节点
+Node* BPlusTree::search(char* s, char* key){//查找需要插入到的叶子节点
 	Node* t = this -> root;
 	while(!t -> isLeaf){//如果t就是叶子节点直接返回，否则继续向下
 		int flag = 0;
@@ -85,7 +88,7 @@ Node* BPlusTree::search(char* s, unsigned int key){//查找需要插入到的叶
 	return t;
 }
 
-void BPlusTree::insert(char* s, unsigned int key){//插入到节点
+void BPlusTree::insert(char* s, char* key){//插入到节点
 	Node* t = search(s, key);
 	int flag = 0;
 	//叶子节点进行插入
@@ -190,8 +193,23 @@ void BPlusTree::insert(char* s, unsigned int key){//插入到节点
 	}
 }
 
-bool BPlusTree::find(char* s){
-	
+bool BPlusTree::find(char* s, char* key){
+	Node* t = this -> root;
+	while(!t -> isLeaf){//如果t就是叶子节点直接返回，否则继续向下
+		int flag = 0;
+		for(int i = 0;i < t -> keynum;i++){
+			if(key <= t -> keys[i]){
+				t = ((IndexNode*)t) -> children[i];
+				flag = 1;
+				break;
+			}
+		}
+		if(flag == 0){//key大于所有关键字，则修改最后一个关键字为当前关键字并进入最后一个关键字
+			return false;
+		}
+	}
+
+	return true;
 }
 
 void BPlusTree::printKeys(){
@@ -237,47 +255,95 @@ void BPlusTree::printValues(){
 	}
 }
 
-
-
 int main(){
 	BPlusTree* tree = new BPlusTree(3);
-	// char* tmp = "abc";
-	tree -> insert("a", 1);
-	tree -> insert("b", 2);
-	tree -> insert("c", 3);
-	tree -> insert("d", 4);
-	// tree -> printKeys();
+	tree -> insert("a", "a");
+	tree -> insert("b", "b");
+	tree -> insert("c", "c");
+	tree -> insert("d", "d");
+	tree -> insert("h", "h");
 
-    tree -> insert("k", 5);
-	// tree -> printKeys();
+	tree -> insert("e", "e");
+	tree -> insert("f", "f");
+	tree -> insert("g", "g");
+	tree -> insert("i", "i");
+	tree -> insert("j", "j");
+	tree -> insert("k", "k");
+	tree -> insert("m", "m");
 
-    tree -> insert("b", 6);
-	// tree -> printKeys();
+	tree -> insert("l", "l");
+	tree -> insert("n", "n");
+	tree -> insert("o", "o");
+	tree -> insert("s", "s");
 
-    tree -> insert("j", 7);
-	// tree -> printKeys();
-
-    tree -> insert("e", 8);//父节点分裂
-	// tree -> printKeys();
-
-    tree -> insert("g", 10);//父节点分裂
-
-    tree -> insert("f", 19);//t的parent节点为2而不是6
-	// tree -> printKeys();
-
-    tree -> insert("h", 60);
-    tree -> insert("m", 71);
-    tree -> insert("p", 77);
-
-	// tree -> printKeys();
-	// tree -> printValues();
-	// cout<<endl;
-    tree -> insert("n", 79);
-    tree -> insert("n", 93);
-
+	tree -> insert("p", "p");
+	tree -> insert("q", "q");
+	tree -> insert("r", "r");
+	
 	tree -> printKeys();
 	tree -> printValues();
+
+	// clock_t start, finish;
+	// start = clock();
+
+	// BPlusTree* tree = new BPlusTree(3);
+	// FileReader* fr = new FileReader();
+	// char* fileLoc = { "./dict.txt" };
+	// bool openRe = fr->openFile(fileLoc,"r");
+	// if (openRe == false) {
+	// 	cout << "文件打开错误" << endl;
+	// 	system("pause");
+	// 	return 0;
+	// }
+	// char* data = new char[BUFFER_SIZE];
+	// memset(data, 0x00, BUFFER_SIZE);
+	// while (fr->getline(data))
+	// {
+	// 	int length = strlen(data);
+	// 	if (length == 0) continue;
+	// 	char* m = new char[length+1];
+	// 	memcpy(m, data, length+1);
+	// 	tree->insert(m, m);
+	// }
+	// delete fr;
+
+	// FileReader* fr_target = new FileReader();
+	// fileLoc = { "./string.txt" };
+	// openRe = fr_target->openFile(fileLoc,"r");
+	// if (!openRe) {
+	// 	cout << "error happen when open target file" << endl;
+	// 	system("pause");
+	// 	return 0;
+	// }
+	
+	// FileWriter* fw = new FileWriter();
+	// fileLoc = { "./test _result.txt" };
+	// openRe = fw->openFile(fileLoc, "w");
+	// if (!openRe) {
+	// 	cout << "error happen when open result file" << endl;
+	// 	system("pause");
+	// 	return 0;
+	// }
+
+	
+	// memset(data, 0x00, BUFFER_SIZE);
+	// int i = 1;
+	// while (fr_target->getline(data))
+	// {
+	// 	int length = strlen(data);
+	// 	if (length == 0) continue;
+	// 	if (tree -> find(data, data)) {
+	// 		//cout<<i<<":" << data << endl;
+	// 		fw->putline(data);
+	// 		i++;
+	// 	}
+	// }
+	// delete fr_target;
+	// delete fw;
+	// finish = clock();
+	// cout<<i<<" lines matched"<<endl;
+	// cout << "use time  is " << finish - start << endl;
+	// system("pause");
+	
+	// return 0;
 }
-// 4  8  77  ||
-// 2  4  ||6  8  ||19  71  77  ||
-// 1  2  ||3  4  ||5  6  ||7  8  ||10  19  ||60  71  ||76  77  ||
